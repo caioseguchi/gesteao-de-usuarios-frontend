@@ -46,7 +46,7 @@ const Usuario = () => {
                     console.log(error);
                 });
         }
-    }, [usuarioService, usuarios ]);
+    }, [usuarioService, usuarios]);
 
     const openNew = () => {
         setUsuario(usuarioVazio);

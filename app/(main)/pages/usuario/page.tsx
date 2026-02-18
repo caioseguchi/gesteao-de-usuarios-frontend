@@ -22,7 +22,7 @@ const Usuario = () => {
         senha: ''
     };
 
-    const [usuarios, setUsuarios] = useState<Projeto.Usuario[]>([]);
+    const [usuarios, setUsuarios] = useState<Projeto.Usuario[] | null>(null);
     const [usuarioDialog, setUsuarioDialog] = useState(false);
     const [deleteUsuarioDialog, setDeleteUsuarioDialog] = useState(false);
     const [deleteUsuariosDialog, setDeleteUsuariosDialog] = useState(false);
@@ -35,7 +35,7 @@ const Usuario = () => {
     const usuarioService = useMemo(() => new UsuarioService(), []);
 
     useEffect(() => {
-        if (usuarios.length == 0) {
+        if (!usuarios) {
             usuarioService
                 .listarTodos()
                 .then((response) => {
@@ -76,28 +76,7 @@ const Usuario = () => {
                 .then((response) => {
                     setUsuarioDialog(false);
                     setUsuario(usuarioVazio);
-                    setUsuarios([]);
-                    toast.current?.show({
-                        severity: 'info',
-                        summary: 'Sucesso!',
-                        detail: 'Usuário alterar com sucesso.'
-                    });
-                })
-                .catch((error) => {
-                    console.log(error.response?.data);
-                    toast.current?.show({
-                        severity: 'error',
-                        summary: 'Erro',
-                        detail: 'Erro ao alterar usuário.' + error.response?.data
-                    });
-                });
-        } else {
-            usuarioService
-                .alterar(usuario)
-                .then((response) => {
-                    setUsuarioDialog(false);
-                    setUsuario(usuarioVazio);
-                    setUsuarios([]);
+                    setUsuarios(null);
                     toast.current?.show({
                         severity: 'info',
                         summary: 'Sucesso!',
@@ -110,6 +89,27 @@ const Usuario = () => {
                         severity: 'error',
                         summary: 'Erro',
                         detail: 'Erro ao cadastrar usuário.' + error.response?.data
+                    });
+                });
+        } else {
+            usuarioService
+                .alterar(usuario)
+                .then((response) => {
+                    setUsuarioDialog(false);
+                    setUsuario(usuarioVazio);
+                    setUsuarios(null);
+                    toast.current?.show({
+                        severity: 'info',
+                        summary: 'Sucesso!',
+                        detail: 'Usuário alterado com sucesso.'
+                    });
+                })
+                .catch((error) => {
+                    console.log(error.response?.data);
+                    toast.current?.show({
+                        severity: 'error',
+                        summary: 'Erro',
+                        detail: 'Erro ao alterar usuário.' + error.response?.data
                     });
                 });
         }
@@ -131,7 +131,7 @@ const Usuario = () => {
             .then((response) => {
                 setUsuario(usuarioVazio);
                 setDeleteUsuarioDialog(false);
-                setUsuarios([]);
+                setUsuarios(null);
                 toast.current?.show({
                     severity: 'success',
                     summary: 'Sucesso!',
@@ -166,7 +166,7 @@ const Usuario = () => {
             })
         )
             .then((response) => {
-                setUsuarios([]);
+                setUsuarios(null);
                 setSelectedUsuarios([]);
                 setDeleteUsuariosDialog(false);
                 toast.current?.show({

@@ -39,8 +39,8 @@ const PerfilUsuario = () => {
     //Lista de perfis e usuários para exibir no dropdown
     const usuarioService = useMemo(() => new UsuarioService(), []);
     const perfilService = useMemo(() => new PerfilService(), []);
-    const [usuarios, setUsuarios] = useState<Projeto.Usuario[] | null>(null);
-    const [perfis, setPerfis] = useState<Projeto.Perfil[] | null>(null);
+    const [usuarios, setUsuarios] = useState<Projeto.Usuario[]>([]);
+    const [perfis, setPerfis] = useState<Projeto.Perfil[]>([]);
 
     useEffect(() => {
         if (!perfilUsuarios) {
@@ -66,10 +66,11 @@ const PerfilUsuario = () => {
                     toast.current?.show({
                         severity: 'info',
                         summary: 'Erro',
-                        detail: 'Erro ao carregar a lista de usuários.' 
+                        detail: 'Erro ao carregar a lista de usuários.'
                     });
                 });
-                perfilService.listarTodos()
+            perfilService
+                .listarTodos()
                 .then((response) => setPerfis(response.data))
                 .catch((error) => {
                     console.log(error);

@@ -9,6 +9,31 @@ export class BaseService {
 
     constructor(url: string) {
         this.url = url;
+
+        axiosInstance.interceptors.request.use(
+            (config) => {
+                const token = localStorage.getItem('TOKEN_APLICACAO_FRONTEND');
+                const authRequestToken = token ? `Bearer ${token}` : '';
+                config.headers['Authorization'] = authRequestToken;
+                return config;
+            },
+            (error) => Promise.reject(error)
+        );
+
+        axiosInstance.interceptors.request.use(
+            (response) => {
+                return response;
+            },
+            async (error) => {
+                const originalConfig = error.config;
+                if (error.response.status == 401) {
+                    localStorage.removeItem('TOKEN_APLICACAO_FRONTEND');
+                    window.location.reload;
+                }
+
+                return Promise.reject(error);
+            }
+        );
     }
 
     listarTodos() {

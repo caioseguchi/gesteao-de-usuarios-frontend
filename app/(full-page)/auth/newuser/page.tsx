@@ -98,7 +98,7 @@ const NewUserPage = () => {
 
                             <div className="flex align-items-center justify-content-between mb-5 gap-5">
                                 <a className="font-medium no-underline ml-2 text-right cursor-pointer" style={{ color: 'var(--primary-color)' }} onClick={() => router.push('/auth/login')}>
-                                    Já tenho uma conta!
+                                    Já possuo uma conta!
                                 </a>
                             </div>
                             <Button label="Efetuar Cadastro" className="w-full p-3 text-xl" onClick={novoUsuario}></Button>
